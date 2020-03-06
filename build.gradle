@@ -1,0 +1,51 @@
+plugins {
+    id 'java'
+}
+
+group 'com.kim.ddongs'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir 'src/main/java'
+        }
+        resources {
+            srcDir 'src/main/resources'
+        }
+    }
+}
+
+sourceCompatibility = '1.8'
+
+apply plugin: 'maven-publish'
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = group
+            artifactId = rootProject.name
+            version = version
+
+            artifact("build/libs/$rootProject.name-$version"+".jar") {
+                extension 'jar'
+            }
+        }
+    }
+    repositories {
+        maven {
+            name 'nexus'
+            url project.nexusUrl
+            credentials {
+                username project.nexusUsername
+                password project.nexusPassword
+            }
+        }
+    }
+}
